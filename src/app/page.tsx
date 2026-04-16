@@ -81,7 +81,7 @@ setMessage("Tack! Vi kommer springande och hämtar din pant.");
           </div>
 
           <h1 className="mt-5 max-w-3xl text-4xl font-black leading-[1.05] sm:text-5xl lg:text-6xl">
-            Skänk din pant och stötta IFK Klagshamns tjejer
+            Skänk din pant och stötta IFK Klagshamns u16-tjejer
           </h1>
 
           <p className="mt-4 max-w-2xl text-base font-medium leading-7 text-[#2D3091]/90 sm:text-lg">
