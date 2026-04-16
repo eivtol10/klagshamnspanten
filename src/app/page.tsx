@@ -85,7 +85,7 @@ setMessage("Tack! Vi kommer springande och hämtar din pant.");
           </h1>
 
           <p className="mt-4 max-w-2xl text-base font-medium leading-7 text-[#2D3091]/90 sm:text-lg">
-            Bor du i Klagshamn, Tygelsjö, Bunkeflo eller däremellan? Säg till
+            Bor du i Klagshamn, Tygelsjö, Bunkeflostrand eller däremellan? Säg till
             att du har pant, så kommer vi och hämtar.
           </p>
 
