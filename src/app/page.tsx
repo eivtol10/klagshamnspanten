@@ -310,7 +310,7 @@ setMessage("Tack! Vi kommer springande och hämtar din pant.");
               </p>
               <div className="mt-4">
   <a
-    href="https://www.instagram.com/ifkklagshamn/"
+    href="https://www.instagram.com/ifkklagshamnf1011/"
     target="_blank"
     rel="noopener noreferrer"
     aria-label="Följ oss på Instagram"
@@ -328,7 +328,7 @@ setMessage("Tack! Vi kommer springande och hämtar din pant.");
     </span>
 
     <span className="bg-[linear-gradient(90deg,#f9ce34,#ee2a7b,#6228d7)] bg-clip-text text-sm font-extrabold tracking-[0.02em] text-transparent">
-      @ifkklagshamn
+      @ifkklagshamnf1011
     </span>
   </a>
 </div>
