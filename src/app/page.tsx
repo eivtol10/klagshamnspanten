@@ -308,6 +308,17 @@ setMessage("Tack! Vi kommer springande och hämtar din pant.");
               <p className="mt-4 text-sm leading-6 text-slate-500">
                 Vi använder bara dina uppgifter för att kunna hämta din pant.
               </p>
+              <div className="mt-4 rounded-2xl bg-[#FFF4C7] p-4">
+  <p className="text-sm font-bold text-[#2D3091]">Följ gärna laget på Instagram</p>
+  <a
+    href="https://www.instagram.com/ifkklagshamnf1011/"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="mt-2 inline-flex items-center gap-2 text-sm font-extrabold text-[#2D3091] underline underline-offset-4"
+  >
+    @ifkklagshamnf1011
+  </a>
+</div>
             </div>
           </section>
         </section>
