@@ -310,20 +310,26 @@ setMessage("Tack! Vi kommer springande och hämtar din pant.");
               </p>
               <div className="mt-4">
   <a
-    href="https://www.instagram.com/ifkklagshamnf1011/"
+    href="https://www.instagram.com/ifkklagshamn/"
     target="_blank"
     rel="noopener noreferrer"
     aria-label="Följ oss på Instagram"
-    className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#2D3091] text-[#FDC909] transition hover:scale-[1.05]"
+    className="inline-flex items-center gap-3 rounded-full bg-[#2D3091] px-3 py-2 transition hover:scale-[1.02]"
   >
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      className="h-5 w-5"
-    >
-      <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5Zm8.88 1.12a1.13 1.13 0 1 1 0 2.26 1.13 1.13 0 0 1 0-2.26ZM12 6.5A5.5 5.5 0 1 1 6.5 12 5.5 5.5 0 0 1 12 6.5Zm0 1.5A4 4 0 1 0 16 12a4 4 0 0 0-4-4Z" />
-    </svg>
+    <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#2D3091] text-[#FDC909]">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        className="h-5 w-5"
+      >
+        <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5Zm8.88 1.12a1.13 1.13 0 1 1 0 2.26 1.13 1.13 0 0 1 0-2.26ZM12 6.5A5.5 5.5 0 1 1 6.5 12 5.5 5.5 0 0 1 12 6.5Zm0 1.5A4 4 0 1 0 16 12a4 4 0 0 0-4-4Z" />
+      </svg>
+    </span>
+
+    <span className="bg-[linear-gradient(90deg,#f9ce34,#ee2a7b,#6228d7)] bg-clip-text text-sm font-extrabold tracking-[0.02em] text-transparent">
+      @ifkklagshamn
+    </span>
   </a>
 </div>
             </div>
