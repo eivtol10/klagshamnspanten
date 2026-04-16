@@ -139,7 +139,7 @@ setMessage("Tack! Vi kommer springande och hämtar din pant.");
                   <br />
                   Tygelsjö
                   <br />
-                  Bunkeflo
+                  Bunkeflostrand
                 </p>
               </div>
 
