@@ -70,6 +70,45 @@ export function computeStats(data: PadelData): PlayerStats[] {
   return players.map((p) => stats[p]).sort((a, b) => b.setWinPct !== a.setWinPct ? b.setWinPct - a.setWinPct : b.gameWinPct - a.gameWinPct);
 }
 
+export function getFormPlayer(data: PadelData): { name: string; formPct: number } | null {
+  if (data.sessions.length === 0) return null;
+
+  const formStats: Record<string, { gamesWon: number; gamesLost: number }> = {};
+  for (const p of data.players) {
+    formStats[p] = { gamesWon: 0, gamesLost: 0 };
+  }
+
+  for (const p of data.players) {
+    const playerSessions = data.sessions
+      .filter(s => s.activePlayers.includes(p))
+      .slice(-3);
+
+    for (const session of playerSessions) {
+      for (const set of session.sets) {
+        if (set.team1.includes(p)) {
+          formStats[p].gamesWon += set.score1;
+          formStats[p].gamesLost += set.score2;
+        } else if (set.team2.includes(p)) {
+          formStats[p].gamesWon += set.score2;
+          formStats[p].gamesLost += set.score1;
+        }
+      }
+    }
+  }
+
+  let best: { name: string; formPct: number } | null = null;
+  for (const p of data.players) {
+    const { gamesWon, gamesLost } = formStats[p];
+    const total = gamesWon + gamesLost;
+    if (total === 0) continue;
+    const pct = Math.round((gamesWon / total) * 100);
+    if (!best || pct > best.formPct) {
+      best = { name: p, formPct: pct };
+    }
+  }
+  return best;
+}
+
 export function generateMatches(players: string[]): { team1: string[]; team2: string[] }[] {
   if (players.length !== 4) return [];
   const [a, b, c, d] = players;

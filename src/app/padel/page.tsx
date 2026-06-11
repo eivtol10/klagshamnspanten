@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { PadelData, PlayerStats, computeStats, Session } from "./padelUtils";
+import { PadelData, PlayerStats, computeStats, getFormPlayer, Session } from "./padelUtils";
 import Link from "next/link";
 
 function StatCard({ label, value, sub }: { label: string; value: string | number; sub?: string }) {
@@ -17,12 +17,13 @@ function StatCard({ label, value, sub }: { label: string; value: string | number
 export default function PadelPage() {
   const [data, setData] = useState<PadelData | null>(null);
   const [stats, setStats] = useState<PlayerStats[]>([]);
+  const [formPlayer, setFormPlayer] = useState<{ name: string; formPct: number } | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch("/api/padel/results")
       .then((r) => r.json())
-      .then((d: PadelData) => { setData(d); setStats(computeStats(d)); setLoading(false); });
+      .then((d: PadelData) => { setData(d); setStats(computeStats(d)); setFormPlayer(getFormPlayer(d)); setLoading(false); });
   }, []);
 
   const totalSessions = data?.sessions.length ?? 0;
@@ -48,7 +49,7 @@ export default function PadelPage() {
           <>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               <StatCard label="Spelveckor" value={totalSessions} />
-              <StatCard label="Spelare" value={data?.players.length ?? 0} />
+              <StatCard label="Formspelaren 🔥" value={formPlayer ? formPlayer.name : "—"} sub={formPlayer ? `${formPlayer.formPct}% game senaste 3 v` : "Inga resultat än"} />
               <StatCard label="Senaste torsdagen" value={lastSession ? new Date(lastSession.date).toLocaleDateString("sv-SE", { day: "numeric", month: "short" }) : "—"} />
               <StatCard label="Totala set" value={totalSessions * 3} />
             </div>
