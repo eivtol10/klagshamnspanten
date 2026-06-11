@@ -53,8 +53,7 @@ export default function PadelPage() {
               <StatCard label="Totala set" value={totalSessions * 3} />
             </div>
 
-            <div className="border border-white/10 rounded-2xl p-6">
-              <section>
+            <section className="border border-white/10 rounded-2xl p-6">
                 <h2 className="text-xs uppercase tracking-widest text-green-300/60 mb-4 font-semibold">Säsongsställning</h2>
                 {stats.length === 0 ? (
                   <div className="text-center text-white/30 py-16 border border-white/10 rounded-2xl">Inga resultat inlagda ännu. Spela på!</div>
@@ -98,11 +97,9 @@ export default function PadelPage() {
                     ))}
                   </div>
                 )}
-              </section>
-            </div>
+            </section>
 
-            <div className="border border-white/10 rounded-2xl p-6">
-              <section>
+            <section className="border border-white/10 rounded-2xl p-6">
                 <h2 className="text-xs uppercase tracking-widest text-white/20 mb-4 font-semibold">
                   Ölkungen 🍺
                 </h2>
@@ -117,7 +114,7 @@ export default function PadelPage() {
                       .map((player, i) => (
                         <div
                           key={player.name}
-                          className={`flex items-center gap-4 rounded-2xl border px-5 py-3 ${
+                          className={`flex items-center gap-4 rounded-2xl border px-5 py-2 ${
                             i === 0 && player.zeroLosses > 0
                               ? "bg-yellow-900/20 border-yellow-700/40"
                               : "bg-white/5 border-white/10"
@@ -127,13 +124,13 @@ export default function PadelPage() {
                             <span className={`text-sm font-bold ${i === 0 && player.zeroLosses > 0 ? "text-yellow-400" : "text-white/30"}`}>{i + 1}</span>
                           </div>
                           <div className="flex-1">
-                            <p className={`font-bold text-sm ${i === 0 && player.zeroLosses > 0 ? "text-yellow-400" : "text-white"}`}>
+                            <p className={`text-sm font-medium ${i === 0 && player.zeroLosses > 0 ? "text-yellow-400" : "text-white/60"}`}>
                               {player.name}
                             </p>
                           </div>
                           <div className="text-right">
                             <p className="text-xs text-white/40 uppercase tracking-wide">Rundor</p>
-                            <p className={`text-lg font-black tabular-nums ${player.zeroLosses > 0 ? "text-yellow-400" : "text-white/20"}`}>
+                            <p className={`text-base font-black tabular-nums ${player.zeroLosses > 0 ? "text-yellow-400" : "text-white/20"}`}>
                               {player.zeroLosses}
                             </p>
                           </div>
@@ -141,8 +138,7 @@ export default function PadelPage() {
                       ))}
                   </div>
                 )}
-              </section>
-            </div>
+            </section>
 
             {data && data.sessions.length > 0 && (
               <section>
