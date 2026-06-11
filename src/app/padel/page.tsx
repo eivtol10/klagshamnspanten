@@ -53,97 +53,96 @@ export default function PadelPage() {
               <StatCard label="Totala set" value={totalSessions * 3} />
             </div>
 
-            <section>
-              <h2 className="text-xs uppercase tracking-widest text-green-300/60 mb-4 font-semibold">Säsongsställning</h2>
-              {stats.length === 0 ? (
-                <div className="text-center text-white/30 py-16 border border-white/10 rounded-2xl">Inga resultat inlagda ännu. Spela på!</div>
-              ) : (
-                <div className="space-y-3">
-                  {stats.map((player, i) => (
-                    <div key={player.name} className={`relative flex items-center gap-4 rounded-2xl border px-5 py-4 transition-all ${i === 0 ? "bg-yellow-400/10 border-yellow-400/40" : "bg-white/5 border-white/10"}`}>
-                      <div className="w-8 text-center text-xl flex-shrink-0">
-                        {i === 0 ? <span className="text-yellow-400">♛</span> : <span className="text-white/30 text-sm font-bold">{i + 1}</span>}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className={`font-bold text-base truncate ${i === 0 ? "text-yellow-400" : "text-white"}`}>
-                          {player.name}
-                          {i === 0 && <span className="ml-2 text-xs font-normal text-yellow-400/60 uppercase tracking-wider">Padelkung</span>}
-                        </p>
-                        <p className="text-xs text-white/40 mt-0.5">{player.sessionsPlayed} speldagar · {player.sessionsRested} vilor</p>
-                      </div>
-                      <div className="hidden sm:flex items-center gap-6 text-right">
-                        <div><p className="text-xs text-white/40 uppercase tracking-wide">Set</p><p className="text-sm font-bold tabular-nums">{player.setsWon}–{player.setsLost}</p></div>
-                        <div><p className="text-xs text-white/40 uppercase tracking-wide">Games</p><p className="text-sm font-bold tabular-nums">{player.gamesWon}–{player.gamesLost}</p></div>
-                        <div className="w-20">
-                          <p className="text-xs text-white/40 uppercase tracking-wide">Set%</p>
-                          <div className="flex items-center gap-2 mt-0.5">
-                            <div className="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden"><div className={`h-full rounded-full ${i === 0 ? "bg-yellow-400" : "bg-green-400"}`} style={{ width: `${player.setWinPct}%` }} /></div>
-                            <span className="text-xs font-bold tabular-nums w-8 text-right">{player.setWinPct}%</span>
-                          </div>
+            <div className="border border-white/10 rounded-2xl p-6">
+              <section>
+                <h2 className="text-xs uppercase tracking-widest text-green-300/60 mb-4 font-semibold">Säsongsställning</h2>
+                {stats.length === 0 ? (
+                  <div className="text-center text-white/30 py-16 border border-white/10 rounded-2xl">Inga resultat inlagda ännu. Spela på!</div>
+                ) : (
+                  <div className="space-y-3">
+                    {stats.map((player, i) => (
+                      <div key={player.name} className={`relative flex items-center gap-4 rounded-2xl border px-5 py-4 transition-all ${i === 0 ? "bg-yellow-400/10 border-yellow-400/40" : "bg-white/5 border-white/10"}`}>
+                        <div className="w-8 text-center text-xl shrink-0">
+                          {i === 0 ? <span className="text-yellow-400">♛</span> : <span className="text-white/30 text-sm font-bold">{i + 1}</span>}
                         </div>
-                        <div className="w-20">
-                          <p className="text-xs text-white/40 uppercase tracking-wide">Game%</p>
-                          <div className="flex items-center gap-2 mt-0.5">
-                            <div className="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden"><div className={`h-full rounded-full ${i === 0 ? "bg-yellow-400" : "bg-green-400"}`} style={{ width: `${player.gameWinPct}%` }} /></div>
-                            <span className="text-xs font-bold tabular-nums w-8 text-right">{player.gameWinPct}%</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="sm:hidden text-right">
-                        <p className="text-xs text-white/40">Set%</p>
-                        <p className="text-base font-black tabular-nums">{player.setWinPct}%</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </section>
-
-            <section>
-              <h2 className="text-xs uppercase tracking-widest text-green-300/60 mb-4 font-semibold">
-                Ölkungen 🍺
-              </h2>
-              {stats.length === 0 ? (
-                <div className="text-center text-white/30 py-16 border border-white/10 rounded-2xl">
-                  Inga nollor ännu. Spela på!
-                </div>
-              ) : (
-                <div className="space-y-3">
-                  {[...stats]
-                    .sort((a, b) => b.zeroLosses - a.zeroLosses)
-                    .map((player, i) => (
-                      <div
-                        key={player.name}
-                        className={`flex items-center gap-4 rounded-2xl border px-5 py-4 ${
-                          i === 0 && player.zeroLosses > 0
-                            ? "bg-yellow-900/20 border-yellow-700/40"
-                            : "bg-white/5 border-white/10"
-                        }`}
-                      >
-                        <div className="w-8 text-center shrink-0">
-                          {i === 0 && player.zeroLosses > 0
-                            ? <span className="text-xl">🍺</span>
-                            : <span className="text-white/30 text-sm font-bold">{i + 1}</span>}
-                        </div>
-                        <div className="flex-1">
-                          <p className={`font-bold text-base ${i === 0 && player.zeroLosses > 0 ? "text-yellow-400" : "text-white"}`}>
+                        <div className="flex-1 min-w-0">
+                          <p className={`font-bold text-base truncate ${i === 0 ? "text-yellow-400" : "text-white"}`}>
                             {player.name}
-                            {i === 0 && player.zeroLosses > 0 && (
-                              <span className="ml-2 text-xs font-normal text-yellow-400/60 uppercase tracking-wider">Ölkung</span>
-                            )}
+                            {i === 0 && <span className="ml-2 text-xs font-normal text-yellow-400/60 uppercase tracking-wider">Padelkung</span>}
                           </p>
+                          <p className="text-xs text-white/40 mt-0.5">{player.sessionsPlayed} speldagar · {player.sessionsRested} vilor</p>
                         </div>
-                        <div className="text-right">
-                          <p className="text-xs text-white/40 uppercase tracking-wide">Rundor</p>
-                          <p className={`text-2xl font-black tabular-nums ${player.zeroLosses > 0 ? "text-yellow-400" : "text-white/20"}`}>
-                            {player.zeroLosses}
-                          </p>
+                        <div className="hidden sm:flex items-center gap-6 text-right">
+                          <div><p className="text-xs text-white/40 uppercase tracking-wide">Set</p><p className="text-sm font-bold tabular-nums">{player.setsWon}–{player.setsLost}</p></div>
+                          <div><p className="text-xs text-white/40 uppercase tracking-wide">Games</p><p className="text-sm font-bold tabular-nums">{player.gamesWon}–{player.gamesLost}</p></div>
+                          <div className="w-20">
+                            <p className="text-xs text-white/40 uppercase tracking-wide">Set%</p>
+                            <div className="flex items-center gap-2 mt-0.5">
+                              <div className="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden"><div className={`h-full rounded-full ${i === 0 ? "bg-yellow-400" : "bg-green-400"}`} style={{ width: `${player.setWinPct}%` }} /></div>
+                              <span className="text-xs font-bold tabular-nums w-8 text-right">{player.setWinPct}%</span>
+                            </div>
+                          </div>
+                          <div className="w-20">
+                            <p className="text-xs text-white/40 uppercase tracking-wide">Game%</p>
+                            <div className="flex items-center gap-2 mt-0.5">
+                              <div className="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden"><div className={`h-full rounded-full ${i === 0 ? "bg-yellow-400" : "bg-green-400"}`} style={{ width: `${player.gameWinPct}%` }} /></div>
+                              <span className="text-xs font-bold tabular-nums w-8 text-right">{player.gameWinPct}%</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="sm:hidden text-right">
+                          <p className="text-xs text-white/40">Set%</p>
+                          <p className="text-base font-black tabular-nums">{player.setWinPct}%</p>
                         </div>
                       </div>
                     ))}
-                </div>
-              )}
-            </section>
+                  </div>
+                )}
+              </section>
+            </div>
+
+            <div className="border border-white/10 rounded-2xl p-6">
+              <section>
+                <h2 className="text-xs uppercase tracking-widest text-white/20 mb-4 font-semibold">
+                  Ölkungen 🍺
+                </h2>
+                {stats.length === 0 ? (
+                  <div className="text-center text-white/30 py-16 border border-white/10 rounded-2xl">
+                    Inga nollor ännu. Spela på!
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {[...stats]
+                      .sort((a, b) => b.zeroLosses - a.zeroLosses)
+                      .map((player, i) => (
+                        <div
+                          key={player.name}
+                          className={`flex items-center gap-4 rounded-2xl border px-5 py-3 ${
+                            i === 0 && player.zeroLosses > 0
+                              ? "bg-yellow-900/20 border-yellow-700/40"
+                              : "bg-white/5 border-white/10"
+                          }`}
+                        >
+                          <div className="w-8 text-center shrink-0">
+                            <span className={`text-sm font-bold ${i === 0 && player.zeroLosses > 0 ? "text-yellow-400" : "text-white/30"}`}>{i + 1}</span>
+                          </div>
+                          <div className="flex-1">
+                            <p className={`font-bold text-sm ${i === 0 && player.zeroLosses > 0 ? "text-yellow-400" : "text-white"}`}>
+                              {player.name}
+                            </p>
+                          </div>
+                          <div className="text-right">
+                            <p className="text-xs text-white/40 uppercase tracking-wide">Rundor</p>
+                            <p className={`text-lg font-black tabular-nums ${player.zeroLosses > 0 ? "text-yellow-400" : "text-white/20"}`}>
+                              {player.zeroLosses}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+                )}
+              </section>
+            </div>
 
             {data && data.sessions.length > 0 && (
               <section>
