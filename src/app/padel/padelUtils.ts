@@ -29,13 +29,14 @@ export interface PlayerStats {
   gamesLost: number;
   setWinPct: number;
   gameWinPct: number;
+  zeroLosses: number;
 }
 
 export function computeStats(data: PadelData): PlayerStats[] {
   const players = data.players;
   const stats: Record<string, PlayerStats> = {};
   for (const p of players) {
-    stats[p] = { name: p, sessionsPlayed: 0, sessionsRested: 0, setsWon: 0, setsLost: 0, gamesWon: 0, gamesLost: 0, setWinPct: 0, gameWinPct: 0 };
+    stats[p] = { name: p, sessionsPlayed: 0, sessionsRested: 0, setsWon: 0, setsLost: 0, gamesWon: 0, gamesLost: 0, setWinPct: 0, gameWinPct: 0, zeroLosses: 0 };
   }
   for (const session of data.sessions) {
     for (const p of session.activePlayers) { if (stats[p]) stats[p].sessionsPlayed++; }
@@ -48,14 +49,14 @@ export function computeStats(data: PadelData): PlayerStats[] {
         stats[p].gamesWon += set.score1;
         stats[p].gamesLost += set.score2;
         if (team1Won) stats[p].setsWon++;
-        else if (team2Won) stats[p].setsLost++;
+        else if (team2Won) { stats[p].setsLost++; if (set.score1 === 0) stats[p].zeroLosses++; }
       }
       for (const p of set.team2) {
         if (!stats[p]) continue;
         stats[p].gamesWon += set.score2;
         stats[p].gamesLost += set.score1;
         if (team2Won) stats[p].setsWon++;
-        else if (team1Won) stats[p].setsLost++;
+        else if (team1Won) { stats[p].setsLost++; if (set.score2 === 0) stats[p].zeroLosses++; }
       }
     }
   }

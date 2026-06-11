@@ -99,6 +99,52 @@ export default function PadelPage() {
               )}
             </section>
 
+            <section>
+              <h2 className="text-xs uppercase tracking-widest text-green-300/60 mb-4 font-semibold">
+                Ölkungen 🍺
+              </h2>
+              {stats.length === 0 ? (
+                <div className="text-center text-white/30 py-16 border border-white/10 rounded-2xl">
+                  Inga nollor ännu. Spela på!
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {[...stats]
+                    .sort((a, b) => b.zeroLosses - a.zeroLosses)
+                    .map((player, i) => (
+                      <div
+                        key={player.name}
+                        className={`flex items-center gap-4 rounded-2xl border px-5 py-4 ${
+                          i === 0 && player.zeroLosses > 0
+                            ? "bg-yellow-900/20 border-yellow-700/40"
+                            : "bg-white/5 border-white/10"
+                        }`}
+                      >
+                        <div className="w-8 text-center shrink-0">
+                          {i === 0 && player.zeroLosses > 0
+                            ? <span className="text-xl">🍺</span>
+                            : <span className="text-white/30 text-sm font-bold">{i + 1}</span>}
+                        </div>
+                        <div className="flex-1">
+                          <p className={`font-bold text-base ${i === 0 && player.zeroLosses > 0 ? "text-yellow-400" : "text-white"}`}>
+                            {player.name}
+                            {i === 0 && player.zeroLosses > 0 && (
+                              <span className="ml-2 text-xs font-normal text-yellow-400/60 uppercase tracking-wider">Ölkung</span>
+                            )}
+                          </p>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-xs text-white/40 uppercase tracking-wide">Rundor</p>
+                          <p className={`text-2xl font-black tabular-nums ${player.zeroLosses > 0 ? "text-yellow-400" : "text-white/20"}`}>
+                            {player.zeroLosses}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              )}
+            </section>
+
             {data && data.sessions.length > 0 && (
               <section>
                 <h2 className="text-xs uppercase tracking-widest text-green-300/60 mb-4 font-semibold">Resultatlogg</h2>
