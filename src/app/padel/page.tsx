@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { PadelData, PlayerStats, computeStats, getFormPlayer, Session } from "./padelUtils";
+import { PadelData, PairStats, PlayerStats, computePairStats, computeStats, getFormPlayer, Session } from "./padelUtils";
 import Link from "next/link";
 
 function StatCard({ label, value, sub }: { label: string; value: string | number; sub?: string }) {
@@ -18,12 +18,13 @@ export default function PadelPage() {
   const [data, setData] = useState<PadelData | null>(null);
   const [stats, setStats] = useState<PlayerStats[]>([]);
   const [formPlayer, setFormPlayer] = useState<{ name: string; formPct: number } | null>(null);
+  const [pairStats, setPairStats] = useState<PairStats[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch("/api/padel/results")
       .then((r) => r.json())
-      .then((d: PadelData) => { setData(d); setStats(computeStats(d)); setFormPlayer(getFormPlayer(d)); setLoading(false); });
+      .then((d: PadelData) => { setData(d); setStats(computeStats(d)); setFormPlayer(getFormPlayer(d)); setPairStats(computePairStats(d)); setLoading(false); });
   }, []);
 
   const totalSessions = data?.sessions.length ?? 0;
@@ -126,6 +127,62 @@ export default function PadelPage() {
                   </div>
                 ))}
               </div>
+            </section>
+
+            <section className="border border-white/10 rounded-2xl p-6">
+              <h2 className="text-xs uppercase tracking-widest text-green-300/60 mb-4 font-semibold">
+                Bästa paren 🤝
+              </h2>
+              {pairStats.length === 0 ? (
+                <div className="text-center text-white/30 py-10 text-sm">Inga par har spelat ännu.</div>
+              ) : (
+                <div className="space-y-2">
+                  {pairStats.map((pair, i) => (
+                    <div
+                      key={pair.players.join("-")}
+                      className={`flex items-center gap-4 rounded-xl border px-5 py-3 ${
+                        i === 0 ? "bg-yellow-400/10 border-yellow-400/40" : "bg-white/5 border-white/10"
+                      }`}
+                    >
+                      <div className="w-8 text-center shrink-0">
+                        {i === 0
+                          ? <span className="text-yellow-400">🤝</span>
+                          : <span className="text-white/30 text-sm font-bold">{i + 1}</span>}
+                      </div>
+                      <div className="flex-1">
+                        <p className={`font-bold text-sm ${i === 0 ? "text-yellow-400" : "text-white"}`}>
+                          {pair.players.join(" & ")}
+                          {i === 0 && <span className="ml-2 text-xs font-normal text-yellow-400/60 uppercase tracking-wider">Bästa paret</span>}
+                        </p>
+                        <p className="text-xs text-white/40 mt-0.5">{pair.setsPlayed} set spelade</p>
+                      </div>
+                      <div className="hidden sm:flex items-center gap-6 text-right">
+                        <div>
+                          <p className="text-xs text-white/40 uppercase tracking-wide">Set</p>
+                          <p className="text-sm font-bold tabular-nums">{pair.setsWon}–{pair.setsLost}</p>
+                        </div>
+                        <div>
+                          <p className="text-xs text-white/40 uppercase tracking-wide">Games</p>
+                          <p className="text-sm font-bold tabular-nums">{pair.gamesWon}–{pair.gamesLost}</p>
+                        </div>
+                        <div className="w-20">
+                          <p className="text-xs text-white/40 uppercase tracking-wide">Set%</p>
+                          <div className="flex items-center gap-2 mt-0.5">
+                            <div className="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden">
+                              <div className={`h-full rounded-full ${i === 0 ? "bg-yellow-400" : "bg-green-400"}`} style={{ width: `${pair.setWinPct}%` }} />
+                            </div>
+                            <span className="text-xs font-bold tabular-nums w-8 text-right">{pair.setWinPct}%</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="sm:hidden text-right">
+                        <p className="text-xs text-white/40">Set%</p>
+                        <p className="text-base font-black tabular-nums">{pair.setWinPct}%</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </section>
 
             <section className="border border-white/10 rounded-2xl p-6">

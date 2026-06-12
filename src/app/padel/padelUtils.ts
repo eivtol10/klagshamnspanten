@@ -70,6 +70,63 @@ export function computeStats(data: PadelData): PlayerStats[] {
   return players.map((p) => stats[p]).sort((a, b) => b.setWinPct !== a.setWinPct ? b.setWinPct - a.setWinPct : b.gameWinPct - a.gameWinPct);
 }
 
+export interface PairStats {
+  players: [string, string];
+  setsWon: number;
+  setsLost: number;
+  gamesWon: number;
+  gamesLost: number;
+  setWinPct: number;
+  gameWinPct: number;
+  setsPlayed: number;
+}
+
+export function computePairStats(data: PadelData): PairStats[] {
+  const pairMap: Record<string, PairStats> = {};
+
+  function pairKey(a: string, b: string) {
+    return [a, b].sort().join("||");
+  }
+
+  for (const session of data.sessions) {
+    for (const set of session.sets) {
+      const pairs = [
+        { players: set.team1, won: set.score1 > set.score2, gamesWon: set.score1, gamesLost: set.score2 },
+        { players: set.team2, won: set.score2 > set.score1, gamesWon: set.score2, gamesLost: set.score1 },
+      ];
+
+      for (const pair of pairs) {
+        const key = pairKey(pair.players[0], pair.players[1]);
+        if (!pairMap[key]) {
+          pairMap[key] = {
+            players: [pair.players[0], pair.players[1]] as [string, string],
+            setsWon: 0,
+            setsLost: 0,
+            gamesWon: 0,
+            gamesLost: 0,
+            setWinPct: 0,
+            gameWinPct: 0,
+            setsPlayed: 0,
+          };
+        }
+        pairMap[key].setsPlayed++;
+        pairMap[key].gamesWon += pair.gamesWon;
+        pairMap[key].gamesLost += pair.gamesLost;
+        if (pair.won) pairMap[key].setsWon++;
+        else pairMap[key].setsLost++;
+      }
+    }
+  }
+
+  return Object.values(pairMap)
+    .map((p) => ({
+      ...p,
+      setWinPct: Math.round((p.setsWon / (p.setsPlayed || 1)) * 100),
+      gameWinPct: Math.round((p.gamesWon / ((p.gamesWon + p.gamesLost) || 1)) * 100),
+    }))
+    .sort((a, b) => b.setWinPct !== a.setWinPct ? b.setWinPct - a.setWinPct : b.gameWinPct - a.gameWinPct);
+}
+
 export function getFormPlayer(data: PadelData): { name: string; formPct: number } | null {
   if (data.sessions.length === 0) return null;
 
