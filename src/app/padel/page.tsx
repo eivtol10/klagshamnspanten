@@ -33,7 +33,9 @@ export default function PadelPage() {
     <div className="min-h-screen bg-[#0d1525] text-white font-sans">
       <header className="border-b border-white/10 px-6 py-5 flex items-center justify-between max-w-5xl mx-auto">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-full bg-yellow-400 flex items-center justify-center text-[#0d1f13] text-lg font-black">P</div>
+          <div className="h-10 w-10 flex items-center justify-center">
+            <img src="/fairplay-logo.jpg" alt="Fair Play" className="h-10 w-10 object-contain rounded-full" />
+          </div>
           <div>
             <h1 className="text-base font-bold leading-tight tracking-tight">Torsdagspadelgänget</h1>
             <p className="text-xs text-white/40">Säsong {data?.season ?? "—"}</p>
@@ -107,7 +109,7 @@ export default function PadelPage() {
               <div className="flex flex-wrap items-center justify-center gap-6">
                 {[
                   { src: "/fairplay-logo.jpg", alt: "Fair Play Tennisklubb" },
-                  { src: "/pizza.png", alt: "Pizza" },
+                  { src: "/Pizza.png", alt: "Pizza" },
                   { src: "/Birra_Moretti_Logo.png", alt: "Birra Moretti" },
                   { src: "/babolat.jpg", alt: "Babolat" },
                   { src: "/bullpadel.png", alt: "Bullpadel" },
