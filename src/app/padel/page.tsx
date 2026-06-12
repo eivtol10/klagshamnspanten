@@ -101,6 +101,33 @@ export default function PadelPage() {
             </section>
 
             <section className="border border-white/10 rounded-2xl p-6">
+              <h2 className="text-xs uppercase tracking-widest text-white/20 mb-6 font-semibold">
+                Sponsorer
+              </h2>
+              <div className="flex flex-wrap items-center justify-center gap-6">
+                {[
+                  { src: "/fairplay-logo.jpg", alt: "Fair Play Tennisklubb" },
+                  { src: "/pizza.png", alt: "Pizza" },
+                  { src: "/Birra_Moretti_Logo.png", alt: "Birra Moretti" },
+                  { src: "/babolat.jpg", alt: "Babolat" },
+                  { src: "/bullpadel.png", alt: "Bullpadel" },
+                ].map((sponsor) => (
+                  <div
+                    key={sponsor.alt}
+                    className="bg-white rounded-xl p-3 flex items-center justify-center"
+                    style={{ width: 120, height: 80 }}
+                  >
+                    <img
+                      src={sponsor.src}
+                      alt={sponsor.alt}
+                      className="max-w-full max-h-full object-contain"
+                    />
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            <section className="border border-white/10 rounded-2xl p-6">
                 <h2 className="text-xs uppercase tracking-widest text-white/20 mb-4 font-semibold">
                   Ölkungen 🍺
                 </h2>
