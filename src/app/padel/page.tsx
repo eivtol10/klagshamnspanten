@@ -109,7 +109,7 @@ export default function PadelPage() {
               <div className="flex flex-wrap items-center justify-center gap-6">
                 {[
                   { src: "/fairplay-logo.jpg", alt: "Fair Play Tennisklubb" },
-                  { src: "/Pizza.png", alt: "Pizza" },
+                  { src: "/pizza.png", alt: "Pizza" },
                   { src: "/Birra_Moretti_Logo.png", alt: "Birra Moretti" },
                   { src: "/babolat.jpg", alt: "Babolat" },
                   { src: "/bullpadel.png", alt: "Bullpadel" },
