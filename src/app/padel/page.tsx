@@ -103,9 +103,7 @@ export default function PadelPage() {
             </section>
 
             <section className="border border-white/10 rounded-2xl p-6">
-              <h2 className="text-xs uppercase tracking-widest text-white/20 mb-6 font-semibold">
-                Sponsorer
-              </h2>
+              <h2 className="text-xs uppercase tracking-widest text-green-300/60 mb-6 font-semibold">Sponsorer</h2>
               <div className="flex flex-wrap items-center justify-center gap-6">
                 {[
                   { src: "/fairplay-logo.jpg", alt: "Fair Play Tennisklubb" },
@@ -131,9 +129,7 @@ export default function PadelPage() {
             </section>
 
             <section className="border border-white/10 rounded-2xl p-6">
-                <h2 className="text-xs uppercase tracking-widest text-white/20 mb-4 font-semibold">
-                  Ölkungen 🍺
-                </h2>
+                <h2 className="text-xs uppercase tracking-widest text-green-300/60 mb-4 font-semibold">Ölkungen 🍺</h2>
                 {stats.length === 0 ? (
                   <div className="text-center text-white/30 py-16 border border-white/10 rounded-2xl">
                     Inga nollor ännu. Spela på!
