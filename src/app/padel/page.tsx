@@ -130,9 +130,7 @@ export default function PadelPage() {
             </section>
 
             <section className="border border-white/10 rounded-2xl p-6">
-              <h2 className="text-xs uppercase tracking-widest text-green-300/60 mb-4 font-semibold">
-                Bästa paren 🤝
-              </h2>
+              <h2 className="text-sm uppercase tracking-widest text-white font-bold mb-4">Bästa paren 🤝</h2>
               {pairStats.length === 0 ? (
                 <div className="text-center text-white/30 py-10 text-sm">Inga par har spelat ännu.</div>
               ) : (
