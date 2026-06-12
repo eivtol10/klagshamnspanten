@@ -113,6 +113,7 @@ export default function PadelPage() {
                   { src: "/Birra_Moretti_Logo.png", alt: "Birra Moretti" },
                   { src: "/babolat.jpg", alt: "Babolat" },
                   { src: "/bullpadel.png", alt: "Bullpadel" },
+      { src: "/voltaren.avif", alt: "Voltaren" },
                 ].map((sponsor) => (
                   <div
                     key={sponsor.alt}
