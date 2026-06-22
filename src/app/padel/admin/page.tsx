@@ -10,14 +10,11 @@ interface SetInput { team1: string[]; team2: string[]; score1: string; score2: s
 
 function validateScore(s1: number, s2: number): string | null {
   if (s1 === s2) return "Oavgjort är inte tillåtet";
-  const max = Math.max(s1, s2); const min = Math.min(s1, s2);
+  const max = Math.max(s1, s2);
+  const min = Math.min(s1, s2);
   if (max < 6) return "Vinnaren måste ha minst 6 games";
-  if (max === 6 && min > 4) return "Vid 6-5 måste man spela vidare";
-  if (max > 7) return "Max 7 games per set";
-  if (max === 7 && min !== 5 && min !== 6) return "Vid 7 måste motståndaren ha 5 eller 6";
-  if (max === 6 && min <= 4) return null;
-  if (max === 7 && (min === 5 || min === 6)) return null;
-  return "Ogiltigt resultat";
+  if (max - min < 2) return "Man måste vinna med minst 2 games";
+  return null;
 }
 
 export default function AdminPage() {
@@ -189,9 +186,9 @@ export default function AdminPage() {
                     <div className="flex items-center gap-3">
                       <div className="flex-1 text-right"><p className="text-sm font-semibold text-white/80">{set.team1.join(" & ")}</p></div>
                       <div className="flex items-center gap-2 flex-shrink-0">
-                        <input type="number" min="0" max="7" value={set.score1} onChange={(e) => updateScore(i, "score1", e.target.value)} className="w-14 text-center bg-[#0d1525] border border-white/20 rounded-lg py-2 text-xl font-black text-white focus:outline-none focus:border-yellow-400 transition-colors" placeholder="0" />
+                        <input type="number" min="0" value={set.score1} onChange={(e) => updateScore(i, "score1", e.target.value)} className="w-14 text-center bg-[#0d1525] border border-white/20 rounded-lg py-2 text-xl font-black text-white focus:outline-none focus:border-yellow-400 transition-colors" placeholder="0" />
                         <span className="text-white/30 font-bold">–</span>
-                        <input type="number" min="0" max="7" value={set.score2} onChange={(e) => updateScore(i, "score2", e.target.value)} className="w-14 text-center bg-[#0d1525] border border-white/20 rounded-lg py-2 text-xl font-black text-white focus:outline-none focus:border-yellow-400 transition-colors" placeholder="0" />
+                        <input type="number" min="0" value={set.score2} onChange={(e) => updateScore(i, "score2", e.target.value)} className="w-14 text-center bg-[#0d1525] border border-white/20 rounded-lg py-2 text-xl font-black text-white focus:outline-none focus:border-yellow-400 transition-colors" placeholder="0" />
                       </div>
                       <div className="flex-1"><p className="text-sm font-semibold text-white/80">{set.team2.join(" & ")}</p></div>
                     </div>
