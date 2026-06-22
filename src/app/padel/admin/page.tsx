@@ -88,10 +88,19 @@ export default function AdminPage() {
 
   async function handleSave() {
     setSaving(true); setSaveError("");
-    const r = await fetch("/api/padel/results", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ date, activePlayers: selectedPlayers, sets: sets.map((s) => ({ team1: s.team1, team2: s.team2, score1: parseInt(s.score1), score2: parseInt(s.score2) })) }) });
-    setSaving(false);
-    if (r.ok) { setStep("done"); setSelectedPlayers([]); setSets([]); }
-    else { const d = await r.json(); setSaveError(d.error || "Något gick fel"); }
+    try {
+      const r = await fetch("/api/padel/results", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ date, activePlayers: selectedPlayers, sets: sets.map((s) => ({ team1: s.team1, team2: s.team2, score1: parseInt(s.score1), score2: parseInt(s.score2) })) }) });
+      if (r.ok) { setStep("done"); setSelectedPlayers([]); setSets([]); }
+      else {
+        let msg = "Något gick fel";
+        try { const d = await r.json(); msg = d.error || msg; } catch {}
+        setSaveError(msg);
+      }
+    } catch {
+      setSaveError("Nätverksfel – försök igen");
+    } finally {
+      setSaving(false);
+    }
   }
 
   async function handleDelete(id: string) {
