@@ -1,21 +1,55 @@
 import { NextRequest, NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
 
-const DATA_PATH = path.join(process.cwd(), "data", "padel.json");
+const GITHUB_API = "https://api.github.com";
+const FILE_PATH = "data/padel.json";
 
 function requireAuth(req: NextRequest) {
   return req.cookies.get("padel_auth")?.value === "true";
 }
-function readData() {
-  return JSON.parse(fs.readFileSync(DATA_PATH, "utf-8"));
+
+async function fetchFromGitHub(): Promise<{ data: unknown; sha: string }> {
+  const repo = process.env.GITHUB_REPO;
+  const token = process.env.GITHUB_TOKEN;
+  const res = await fetch(`${GITHUB_API}/repos/${repo}/contents/${FILE_PATH}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: "application/vnd.github+json",
+    },
+    cache: "no-store",
+  });
+  if (!res.ok) throw new Error(`GitHub GET failed: ${res.status}`);
+  const json = await res.json();
+  const content = Buffer.from(json.content, "base64").toString("utf-8");
+  return { data: JSON.parse(content), sha: json.sha };
 }
-function writeData(data: unknown) {
-  fs.writeFileSync(DATA_PATH, JSON.stringify(data, null, 2), "utf-8");
+
+async function saveToGitHub(data: unknown, sha: string): Promise<void> {
+  const repo = process.env.GITHUB_REPO;
+  const token = process.env.GITHUB_TOKEN;
+  const content = Buffer.from(JSON.stringify(data, null, 2), "utf-8").toString("base64");
+  const res = await fetch(`${GITHUB_API}/repos/${repo}/contents/${FILE_PATH}`, {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: "application/vnd.github+json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ message: "Update padel data", content, sha }),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(`GitHub PUT failed: ${res.status} – ${JSON.stringify(err)}`);
+  }
 }
 
 export async function GET() {
-  return NextResponse.json(readData());
+  try {
+    const { data } = await fetchFromGitHub();
+    return NextResponse.json(data);
+  } catch (e) {
+    console.error("Fel vid läsning:", e);
+    return NextResponse.json({ error: "Kunde inte läsa data" }, { status: 500 });
+  }
 }
 
 export async function POST(req: NextRequest) {
@@ -30,16 +64,17 @@ export async function POST(req: NextRequest) {
       if (typeof set.score1 !== "number" || typeof set.score2 !== "number" || set.score1 < 0 || set.score2 < 0)
         return NextResponse.json({ error: "Ogiltiga poäng" }, { status: 400 });
     }
-    const data = readData();
+    const { data, sha } = await fetchFromGitHub();
+    const d = data as { players: string[]; sessions: unknown[] };
     const session = {
       id: Date.now().toString(),
       date,
       activePlayers,
-      restingPlayers: data.players.filter((p: string) => !activePlayers.includes(p)),
+      restingPlayers: d.players.filter((p: string) => !activePlayers.includes(p)),
       sets,
     };
-    data.sessions.push(session);
-    writeData(data);
+    d.sessions.push(session);
+    await saveToGitHub(d, sha);
     return NextResponse.json({ ok: true, session });
   } catch (e) {
     console.error("Fel vid sparande av session:", e);
@@ -49,9 +84,15 @@ export async function POST(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
   if (!requireAuth(req)) return NextResponse.json({ error: "Ej inloggad" }, { status: 401 });
-  const { id } = await req.json();
-  const data = readData();
-  data.sessions = data.sessions.filter((s: { id: string }) => s.id !== id);
-  writeData(data);
-  return NextResponse.json({ ok: true });
+  try {
+    const { id } = await req.json();
+    const { data, sha } = await fetchFromGitHub();
+    const d = data as { sessions: { id: string }[] };
+    d.sessions = d.sessions.filter((s) => s.id !== id);
+    await saveToGitHub(d, sha);
+    return NextResponse.json({ ok: true });
+  } catch (e) {
+    console.error("Fel vid radering:", e);
+    return NextResponse.json({ error: "Serverfel – kunde inte radera" }, { status: 500 });
+  }
 }
