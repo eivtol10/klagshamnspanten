@@ -28,7 +28,7 @@ export interface PlayerStats {
   gamesWon: number;
   gamesLost: number;
   setWinPct: number;
-  gameWinPct: number;
+  avgGameDiff: number;
   zeroLosses: number;
 }
 
@@ -36,7 +36,7 @@ export function computeStats(data: PadelData): PlayerStats[] {
   const players = data.players;
   const stats: Record<string, PlayerStats> = {};
   for (const p of players) {
-    stats[p] = { name: p, sessionsPlayed: 0, sessionsRested: 0, setsWon: 0, setsLost: 0, gamesWon: 0, gamesLost: 0, setWinPct: 0, gameWinPct: 0, zeroLosses: 0 };
+    stats[p] = { name: p, sessionsPlayed: 0, sessionsRested: 0, setsWon: 0, setsLost: 0, gamesWon: 0, gamesLost: 0, setWinPct: 0, avgGameDiff: 0, zeroLosses: 0 };
   }
   for (const session of data.sessions) {
     for (const p of session.activePlayers) { if (stats[p]) stats[p].sessionsPlayed++; }
@@ -64,10 +64,10 @@ export function computeStats(data: PadelData): PlayerStats[] {
     const s = stats[p];
     if (s.sessionsPlayed > 0) {
       s.setWinPct = Math.round((s.setsWon / (s.sessionsPlayed * 3)) * 100);
-      s.gameWinPct = Math.round((s.gamesWon / (s.gamesWon + s.gamesLost || 1)) * 100);
+      s.avgGameDiff = Math.round(((s.gamesWon - s.gamesLost) / (s.sessionsPlayed * 3)) * 10) / 10;
     }
   }
-  return players.map((p) => stats[p]).sort((a, b) => b.setWinPct !== a.setWinPct ? b.setWinPct - a.setWinPct : b.gameWinPct - a.gameWinPct);
+  return players.map((p) => stats[p]).sort((a, b) => b.setWinPct !== a.setWinPct ? b.setWinPct - a.setWinPct : b.avgGameDiff - a.avgGameDiff);
 }
 
 export interface PairStats {
@@ -77,7 +77,7 @@ export interface PairStats {
   gamesWon: number;
   gamesLost: number;
   setWinPct: number;
-  gameWinPct: number;
+  avgGameDiff: number;
   setsPlayed: number;
 }
 
@@ -105,7 +105,7 @@ export function computePairStats(data: PadelData): PairStats[] {
             gamesWon: 0,
             gamesLost: 0,
             setWinPct: 0,
-            gameWinPct: 0,
+            avgGameDiff: 0,
             setsPlayed: 0,
           };
         }
@@ -122,12 +122,12 @@ export function computePairStats(data: PadelData): PairStats[] {
     .map((p) => ({
       ...p,
       setWinPct: Math.round((p.setsWon / (p.setsPlayed || 1)) * 100),
-      gameWinPct: Math.round((p.gamesWon / ((p.gamesWon + p.gamesLost) || 1)) * 100),
+      avgGameDiff: Math.round(((p.gamesWon - p.gamesLost) / (p.setsPlayed || 1)) * 10) / 10,
     }))
-    .sort((a, b) => b.setWinPct !== a.setWinPct ? b.setWinPct - a.setWinPct : b.gameWinPct - a.gameWinPct);
+    .sort((a, b) => b.setWinPct !== a.setWinPct ? b.setWinPct - a.setWinPct : b.avgGameDiff - a.avgGameDiff);
 }
 
-export function getFormPlayer(data: PadelData): { name: string; formPct: number } | null {
+export function getFormPlayer(data: PadelData): { name: string; formDiff: number } | null {
   if (data.sessions.length === 0) return null;
 
   const formStats: Record<string, { gamesWon: number; gamesLost: number }> = {};
@@ -153,14 +153,14 @@ export function getFormPlayer(data: PadelData): { name: string; formPct: number 
     }
   }
 
-  let best: { name: string; formPct: number } | null = null;
+  let best: { name: string; formDiff: number } | null = null;
   for (const p of data.players) {
     const { gamesWon, gamesLost } = formStats[p];
-    const total = gamesWon + gamesLost;
-    if (total === 0) continue;
-    const pct = Math.round((gamesWon / total) * 100);
-    if (!best || pct > best.formPct) {
-      best = { name: p, formPct: pct };
+    const sets = data.sessions.filter(s => s.activePlayers.includes(p)).slice(-3).length * 3;
+    if (sets === 0) continue;
+    const diff = Math.round(((gamesWon - gamesLost) / sets) * 10) / 10;
+    if (!best || diff > best.formDiff) {
+      best = { name: p, formDiff: diff };
     }
   }
   return best;

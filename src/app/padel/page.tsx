@@ -17,7 +17,7 @@ function StatCard({ label, value, sub }: { label: string; value: string | number
 export default function PadelPage() {
   const [data, setData] = useState<PadelData | null>(null);
   const [stats, setStats] = useState<PlayerStats[]>([]);
-  const [formPlayer, setFormPlayer] = useState<{ name: string; formPct: number } | null>(null);
+  const [formPlayer, setFormPlayer] = useState<{ name: string; formDiff: number } | null>(null);
   const [pairStats, setPairStats] = useState<PairStats[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -52,7 +52,7 @@ export default function PadelPage() {
           <>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               <StatCard label="Spelveckor" value={totalSessions} />
-              <StatCard label="Formspelaren 🔥" value={formPlayer ? formPlayer.name : "—"} sub={formPlayer ? `${formPlayer.formPct}% game senaste 3 v` : "Inga resultat än"} />
+              <StatCard label="Formspelaren 🔥" value={formPlayer ? formPlayer.name : "—"} sub={formPlayer ? `${formPlayer.formDiff > 0 ? "+" : ""}${formPlayer.formDiff.toFixed(1)} game/set senaste 3 v` : "Inga resultat än"} />
               <StatCard label="Senaste torsdagen" value={lastSession ? new Date(lastSession.date).toLocaleDateString("sv-SE", { day: "numeric", month: "short" }) : "—"} />
               <StatCard label="Totala set" value={totalSessions * 3} />
             </div>
@@ -86,11 +86,8 @@ export default function PadelPage() {
                             </div>
                           </div>
                           <div className="w-20">
-                            <p className="text-xs text-white/40 uppercase tracking-wide">Game%</p>
-                            <div className="flex items-center gap-2 mt-0.5">
-                              <div className="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden"><div className={`h-full rounded-full ${i === 0 ? "bg-yellow-400" : "bg-green-400"}`} style={{ width: `${player.gameWinPct}%` }} /></div>
-                              <span className="text-xs font-bold tabular-nums w-8 text-right">{player.gameWinPct}%</span>
-                            </div>
+                            <p className="text-xs text-white/40 uppercase tracking-wide">Game±</p>
+                            <p className="text-sm font-bold tabular-nums mt-0.5">{player.avgGameDiff > 0 ? "+" : ""}{player.avgGameDiff.toFixed(1)}</p>
                           </div>
                         </div>
                         <div className="sm:hidden text-right">
