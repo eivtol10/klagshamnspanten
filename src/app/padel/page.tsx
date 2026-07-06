@@ -156,26 +156,25 @@ export default function PadelPage() {
                       </div>
                       <div className="hidden sm:flex items-center gap-6 text-right">
                         <div>
+                          <p className="text-xs text-white/40 uppercase tracking-wide">Set%</p>
+                          <p className="text-sm font-bold tabular-nums">{pair.avgSetDiff > 0 ? "+" : ""}{pair.avgSetDiff.toFixed(2)}</p>
+                        </div>
+                        <div>
                           <p className="text-xs text-white/40 uppercase tracking-wide">Set</p>
                           <p className="text-sm font-bold tabular-nums">{pair.setsWon}–{pair.setsLost}</p>
+                        </div>
+                        <div>
+                          <p className="text-xs text-white/40 uppercase tracking-wide">Game%</p>
+                          <p className="text-sm font-bold tabular-nums">{pair.avgGameDiff > 0 ? "+" : ""}{pair.avgGameDiff.toFixed(2)}</p>
                         </div>
                         <div>
                           <p className="text-xs text-white/40 uppercase tracking-wide">Games</p>
                           <p className="text-sm font-bold tabular-nums">{pair.gamesWon}–{pair.gamesLost}</p>
                         </div>
-                        <div className="w-20">
-                          <p className="text-xs text-white/40 uppercase tracking-wide">Set%</p>
-                          <div className="flex items-center gap-2 mt-0.5">
-                            <div className="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden">
-                              <div className={`h-full rounded-full ${i === 0 ? "bg-yellow-400" : "bg-green-400"}`} style={{ width: `${pair.setWinPct}%` }} />
-                            </div>
-                            <span className="text-xs font-bold tabular-nums w-8 text-right">{pair.setWinPct}%</span>
-                          </div>
-                        </div>
                       </div>
                       <div className="sm:hidden text-right">
                         <p className="text-xs text-white/40">Set%</p>
-                        <p className="text-base font-black tabular-nums">{pair.setWinPct}%</p>
+                        <p className="text-base font-black tabular-nums">{pair.avgSetDiff > 0 ? "+" : ""}{pair.avgSetDiff.toFixed(2)}</p>
                       </div>
                     </div>
                   ))}

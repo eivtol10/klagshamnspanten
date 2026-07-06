@@ -82,7 +82,7 @@ export interface PairStats {
   setsLost: number;
   gamesWon: number;
   gamesLost: number;
-  setWinPct: number;
+  avgSetDiff: number;
   avgGameDiff: number;
   setsPlayed: number;
 }
@@ -110,7 +110,7 @@ export function computePairStats(data: PadelData): PairStats[] {
             setsLost: 0,
             gamesWon: 0,
             gamesLost: 0,
-            setWinPct: 0,
+            avgSetDiff: 0,
             avgGameDiff: 0,
             setsPlayed: 0,
           };
@@ -127,10 +127,15 @@ export function computePairStats(data: PadelData): PairStats[] {
   return Object.values(pairMap)
     .map((p) => ({
       ...p,
-      setWinPct: Math.round((p.setsWon / (p.setsPlayed || 1)) * 100),
-      avgGameDiff: Math.round(((p.gamesWon - p.gamesLost) / (p.setsPlayed || 1)) * 10) / 10,
+      avgSetDiff: Math.round(((p.setsWon - p.setsLost) / (p.setsPlayed || 1)) * 100) / 100,
+      avgGameDiff: Math.round(((p.gamesWon - p.gamesLost) / (p.setsPlayed || 1)) * 100) / 100,
     }))
-    .sort((a, b) => b.setWinPct !== a.setWinPct ? b.setWinPct - a.setWinPct : b.avgGameDiff - a.avgGameDiff);
+    .sort((a, b) => {
+      if (b.avgSetDiff !== a.avgSetDiff) return b.avgSetDiff - a.avgSetDiff;
+      if (b.avgGameDiff !== a.avgGameDiff) return b.avgGameDiff - a.avgGameDiff;
+      if (b.setsWon !== a.setsWon) return b.setsWon - a.setsWon;
+      return b.gamesWon - a.gamesWon;
+    });
 }
 
 export function getFormPlayer(data: PadelData): { name: string; formDiff: number } | null {
