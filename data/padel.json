@@ -8,58 +8,5 @@
     "Stoffe",
     "Christian"
   ],
-  "sessions": [
-    {
-      "id": "1782152051984",
-      "date": "2026-06-22",
-      "activePlayers": [
-        "Eivind",
-        "Klas",
-        "Jacob",
-        "Christian"
-      ],
-      "restingPlayers": [
-        "Marcus",
-        "Stoffe"
-      ],
-      "sets": [
-        {
-          "team1": [
-            "Eivind",
-            "Klas"
-          ],
-          "team2": [
-            "Jacob",
-            "Christian"
-          ],
-          "score1": 6,
-          "score2": 0
-        },
-        {
-          "team1": [
-            "Eivind",
-            "Jacob"
-          ],
-          "team2": [
-            "Klas",
-            "Christian"
-          ],
-          "score1": 0,
-          "score2": 6
-        },
-        {
-          "team1": [
-            "Eivind",
-            "Christian"
-          ],
-          "team2": [
-            "Klas",
-            "Jacob"
-          ],
-          "score1": 8,
-          "score2": 6
-        }
-      ]
-    }
-  ]
+  "sessions": []
 }
