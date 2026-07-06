@@ -27,7 +27,7 @@ export interface PlayerStats {
   setsLost: number;
   gamesWon: number;
   gamesLost: number;
-  setWinPct: number;
+  avgSetDiff: number;
   avgGameDiff: number;
   zeroLosses: number;
 }
@@ -36,7 +36,7 @@ export function computeStats(data: PadelData): PlayerStats[] {
   const players = data.players;
   const stats: Record<string, PlayerStats> = {};
   for (const p of players) {
-    stats[p] = { name: p, sessionsPlayed: 0, sessionsRested: 0, setsWon: 0, setsLost: 0, gamesWon: 0, gamesLost: 0, setWinPct: 0, avgGameDiff: 0, zeroLosses: 0 };
+    stats[p] = { name: p, sessionsPlayed: 0, sessionsRested: 0, setsWon: 0, setsLost: 0, gamesWon: 0, gamesLost: 0, avgSetDiff: 0, avgGameDiff: 0, zeroLosses: 0 };
   }
   for (const session of data.sessions) {
     for (const p of session.activePlayers) { if (stats[p]) stats[p].sessionsPlayed++; }
@@ -63,11 +63,17 @@ export function computeStats(data: PadelData): PlayerStats[] {
   for (const p of players) {
     const s = stats[p];
     if (s.sessionsPlayed > 0) {
-      s.setWinPct = Math.round((s.setsWon / (s.sessionsPlayed * 3)) * 100);
-      s.avgGameDiff = Math.round(((s.gamesWon - s.gamesLost) / (s.sessionsPlayed * 3)) * 10) / 10;
+      const setsPlayed = s.sessionsPlayed * 3;
+      s.avgSetDiff = Math.round(((s.setsWon - s.setsLost) / setsPlayed) * 100) / 100;
+      s.avgGameDiff = Math.round(((s.gamesWon - s.gamesLost) / setsPlayed) * 100) / 100;
     }
   }
-  return players.map((p) => stats[p]).sort((a, b) => b.setWinPct !== a.setWinPct ? b.setWinPct - a.setWinPct : b.avgGameDiff - a.avgGameDiff);
+  return players.map((p) => stats[p]).sort((a, b) => {
+    if (b.avgSetDiff !== a.avgSetDiff) return b.avgSetDiff - a.avgSetDiff;
+    if (b.avgGameDiff !== a.avgGameDiff) return b.avgGameDiff - a.avgGameDiff;
+    if (b.setsWon !== a.setsWon) return b.setsWon - a.setsWon;
+    return b.gamesWon - a.gamesWon;
+  });
 }
 
 export interface PairStats {

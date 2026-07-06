@@ -76,23 +76,26 @@ export default function PadelPage() {
                           <p className="text-xs text-white/40 mt-0.5">{player.sessionsPlayed} speldagar · {player.sessionsRested} vilor</p>
                         </div>
                         <div className="hidden sm:flex items-center gap-6 text-right">
-                          <div><p className="text-xs text-white/40 uppercase tracking-wide">Set</p><p className="text-sm font-bold tabular-nums">{player.setsWon}–{player.setsLost}</p></div>
-                          <div><p className="text-xs text-white/40 uppercase tracking-wide">Games</p><p className="text-sm font-bold tabular-nums">{player.gamesWon}–{player.gamesLost}</p></div>
-                          <div className="w-20">
+                          <div>
                             <p className="text-xs text-white/40 uppercase tracking-wide">Set%</p>
-                            <div className="flex items-center gap-2 mt-0.5">
-                              <div className="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden"><div className={`h-full rounded-full ${i === 0 ? "bg-yellow-400" : "bg-green-400"}`} style={{ width: `${player.setWinPct}%` }} /></div>
-                              <span className="text-xs font-bold tabular-nums w-8 text-right">{player.setWinPct}%</span>
-                            </div>
+                            <p className="text-sm font-bold tabular-nums">{player.avgSetDiff > 0 ? "+" : ""}{player.avgSetDiff.toFixed(2)}</p>
                           </div>
-                          <div className="w-20">
-                            <p className="text-xs text-white/40 uppercase tracking-wide">Game±</p>
-                            <p className="text-sm font-bold tabular-nums mt-0.5">{player.avgGameDiff > 0 ? "+" : ""}{player.avgGameDiff.toFixed(1)}</p>
+                          <div>
+                            <p className="text-xs text-white/40 uppercase tracking-wide">Set</p>
+                            <p className="text-sm font-bold tabular-nums">{player.setsWon}–{player.setsLost}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-white/40 uppercase tracking-wide">Game%</p>
+                            <p className="text-sm font-bold tabular-nums">{player.avgGameDiff > 0 ? "+" : ""}{player.avgGameDiff.toFixed(2)}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-white/40 uppercase tracking-wide">Games</p>
+                            <p className="text-sm font-bold tabular-nums">{player.gamesWon}–{player.gamesLost}</p>
                           </div>
                         </div>
                         <div className="sm:hidden text-right">
                           <p className="text-xs text-white/40">Set%</p>
-                          <p className="text-base font-black tabular-nums">{player.setWinPct}%</p>
+                          <p className="text-base font-black tabular-nums">{player.avgSetDiff > 0 ? "+" : ""}{player.avgSetDiff.toFixed(2)}</p>
                         </div>
                       </div>
                     ))}
