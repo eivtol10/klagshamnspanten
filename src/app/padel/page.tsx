@@ -63,30 +63,26 @@ export default function PadelPage() {
                   <div className="text-center text-white/30 py-16 border border-white/10 rounded-2xl">Inga resultat inlagda ännu. Spela på!</div>
                 ) : (
                   <div className="space-y-3">
-                    {stats.map((player, i) => (
-                      <div key={player.name} className={`relative flex items-center gap-4 rounded-2xl border px-5 py-4 transition-all ${i === 0 ? "bg-yellow-400/10 border-yellow-400/40" : "bg-white/5 border-white/10"}`}>
+                    {stats.map((player) => (
+                      <div key={player.name} className={`relative flex items-center gap-4 rounded-2xl border px-5 py-4 transition-all ${player.rank === 1 ? "bg-yellow-400/10 border-yellow-400/40" : "bg-white/5 border-white/10"}`}>
                         <div className="w-8 text-center text-xl shrink-0">
-                          {i === 0 ? <span className="text-yellow-400">♛</span> : <span className="text-white/30 text-sm font-bold">{i + 1}</span>}
+                          {player.rank === 1 ? <span className="text-yellow-400">♛</span> : <span className="text-white/30 text-sm font-bold">{player.rank}</span>}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className={`font-bold text-base truncate ${i === 0 ? "text-yellow-400" : "text-white"}`}>
+                          <p className={`font-bold text-base truncate ${player.rank === 1 ? "text-yellow-400" : "text-white"}`}>
                             {player.name}
-                            {i === 0 && <span className="ml-2 text-xs font-normal text-yellow-400/60 uppercase tracking-wider">Padelkung</span>}
+                            {player.rank === 1 && <span className="ml-2 text-xs font-normal text-yellow-400/60 uppercase tracking-wider">Padelkung</span>}
                           </p>
                           <p className="text-xs text-white/40 mt-0.5">{player.sessionsPlayed} speldagar · {player.sessionsRested} vilor</p>
                         </div>
                         <div className="hidden sm:flex items-center gap-6 text-right">
                           <div>
                             <p className="text-xs text-white/40 uppercase tracking-wide">Set%</p>
-                            <p className="text-sm font-bold tabular-nums">{player.avgSetDiff > 0 ? "+" : ""}{player.avgSetDiff.toFixed(2)}</p>
+                            <p className="text-sm font-bold tabular-nums">{player.setPct}% ({player.setsWon}/{player.setsWon + player.setsLost})</p>
                           </div>
                           <div>
-                            <p className="text-xs text-white/40 uppercase tracking-wide">Set</p>
-                            <p className="text-sm font-bold tabular-nums">{player.setsWon}–{player.setsLost}</p>
-                          </div>
-                          <div>
-                            <p className="text-xs text-white/40 uppercase tracking-wide">Game%</p>
-                            <p className="text-sm font-bold tabular-nums">{player.avgGameDiff > 0 ? "+" : ""}{player.avgGameDiff.toFixed(2)}</p>
+                            <p className="text-xs text-white/40 uppercase tracking-wide">+game</p>
+                            <p className="text-sm font-bold tabular-nums">{player.gameDiff > 0 ? "+" : ""}{player.gameDiff}</p>
                           </div>
                           <div>
                             <p className="text-xs text-white/40 uppercase tracking-wide">Games</p>
@@ -95,7 +91,8 @@ export default function PadelPage() {
                         </div>
                         <div className="sm:hidden text-right">
                           <p className="text-xs text-white/40">Set%</p>
-                          <p className="text-base font-black tabular-nums">{player.avgSetDiff > 0 ? "+" : ""}{player.avgSetDiff.toFixed(2)}</p>
+                          <p className="text-base font-black tabular-nums">{player.setPct}% ({player.setsWon}/{player.setsWon + player.setsLost})</p>
+                          <p className="text-xs text-white/40 mt-1">{player.gameDiff > 0 ? "+" : ""}{player.gameDiff} game</p>
                         </div>
                       </div>
                     ))}
@@ -131,14 +128,14 @@ export default function PadelPage() {
                       <div className="hidden sm:flex items-center gap-6 text-right">
                         <div>
                           <p className="text-xs text-white/40 uppercase tracking-wide">Set%</p>
-                          <p className="text-sm font-bold tabular-nums">{pair.avgSetDiff > 0 ? "+" : ""}{pair.avgSetDiff.toFixed(2)}</p>
+                          <p className="text-sm font-bold tabular-nums">{Math.round(pair.avgSetDiff * 100)}%</p>
                         </div>
                         <div>
                           <p className="text-xs text-white/40 uppercase tracking-wide">Set</p>
                           <p className="text-sm font-bold tabular-nums">{pair.setsWon}–{pair.setsLost}</p>
                         </div>
                         <div>
-                          <p className="text-xs text-white/40 uppercase tracking-wide">Game%</p>
+                          <p className="text-xs text-white/40 uppercase tracking-wide">Avg game diff</p>
                           <p className="text-sm font-bold tabular-nums">{pair.avgGameDiff > 0 ? "+" : ""}{pair.avgGameDiff.toFixed(2)}</p>
                         </div>
                         <div>
@@ -148,7 +145,7 @@ export default function PadelPage() {
                       </div>
                       <div className="sm:hidden text-right">
                         <p className="text-xs text-white/40">Set%</p>
-                        <p className="text-base font-black tabular-nums">{pair.avgSetDiff > 0 ? "+" : ""}{pair.avgSetDiff.toFixed(2)}</p>
+                        <p className="text-base font-black tabular-nums">{Math.round(pair.avgSetDiff * 100)}%</p>
                       </div>
                     </div>
                   ))}

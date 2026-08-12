@@ -27,16 +27,17 @@ export interface PlayerStats {
   setsLost: number;
   gamesWon: number;
   gamesLost: number;
-  avgSetDiff: number;
-  avgGameDiff: number;
+  setPct: number;
+  gameDiff: number;
   zeroLosses: number;
+  rank: number;
 }
 
 export function computeStats(data: PadelData): PlayerStats[] {
   const players = data.players;
   const stats: Record<string, PlayerStats> = {};
   for (const p of players) {
-    stats[p] = { name: p, sessionsPlayed: 0, sessionsRested: 0, setsWon: 0, setsLost: 0, gamesWon: 0, gamesLost: 0, avgSetDiff: 0, avgGameDiff: 0, zeroLosses: 0 };
+    stats[p] = { name: p, sessionsPlayed: 0, sessionsRested: 0, setsWon: 0, setsLost: 0, gamesWon: 0, gamesLost: 0, setPct: 0, gameDiff: 0, zeroLosses: 0, rank: 0 };
   }
   for (const session of data.sessions) {
     for (const p of session.activePlayers) { if (stats[p]) stats[p].sessionsPlayed++; }
@@ -62,18 +63,24 @@ export function computeStats(data: PadelData): PlayerStats[] {
   }
   for (const p of players) {
     const s = stats[p];
-    if (s.sessionsPlayed > 0) {
-      const setsPlayed = s.sessionsPlayed * 3;
-      s.avgSetDiff = Math.round(((s.setsWon - s.setsLost) / setsPlayed) * 100) / 100;
-      s.avgGameDiff = Math.round(((s.gamesWon - s.gamesLost) / setsPlayed) * 100) / 100;
+    const setsPlayed = s.setsWon + s.setsLost;
+    s.gameDiff = s.gamesWon - s.gamesLost;
+    if (setsPlayed > 0) {
+      s.setPct = Math.round((s.setsWon / setsPlayed) * 100);
     }
   }
-  return players.map((p) => stats[p]).sort((a, b) => {
-    if (b.avgSetDiff !== a.avgSetDiff) return b.avgSetDiff - a.avgSetDiff;
-    if (b.avgGameDiff !== a.avgGameDiff) return b.avgGameDiff - a.avgGameDiff;
-    if (b.setsWon !== a.setsWon) return b.setsWon - a.setsWon;
-    return b.gamesWon - a.gamesWon;
+  const sorted = players.map((p) => stats[p]).sort((a, b) => {
+    if (b.setPct !== a.setPct) return b.setPct - a.setPct;
+    return b.gameDiff - a.gameDiff;
   });
+  let rank = 0;
+  sorted.forEach((s, i) => {
+    if (i === 0 || s.setPct !== sorted[i - 1].setPct || s.gameDiff !== sorted[i - 1].gameDiff) {
+      rank = i + 1;
+    }
+    s.rank = rank;
+  });
+  return sorted;
 }
 
 export interface PairStats {
