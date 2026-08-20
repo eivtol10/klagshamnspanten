@@ -60,6 +60,58 @@
           "score2": 6
         }
       ]
+    },
+    {
+      "id": "1787238672319",
+      "date": "2026-08-20",
+      "activePlayers": [
+        "Klas",
+        "Eivind",
+        "Jacob",
+        "Stoffe"
+      ],
+      "restingPlayers": [
+        "Marcus",
+        "Christian"
+      ],
+      "sets": [
+        {
+          "team1": [
+            "Klas",
+            "Eivind"
+          ],
+          "team2": [
+            "Jacob",
+            "Stoffe"
+          ],
+          "score1": 6,
+          "score2": 4
+        },
+        {
+          "team1": [
+            "Klas",
+            "Jacob"
+          ],
+          "team2": [
+            "Eivind",
+            "Stoffe"
+          ],
+          "score1": 2,
+          "score2": 6
+        },
+        {
+          "team1": [
+            "Klas",
+            "Stoffe"
+          ],
+          "team2": [
+            "Eivind",
+            "Jacob"
+          ],
+          "score1": 6,
+          "score2": 4
+        }
+      ]
     }
   ]
 }
